@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   if (!q) {
-    return res.status(400).json({ error: "Missing search query" });
+    return res.status(400).json({ error: "Missing query" });
   }
 
   try {
@@ -16,14 +16,10 @@ export default async function handler(req, res) {
       )}&key=${process.env.YOUTUBE_API_KEY}`
     );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).json({ error: errorText });
-    }
-
     const data = await response.json();
-    res.status(200).json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 }
